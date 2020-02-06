@@ -9,7 +9,7 @@ public class BookstoreController {
 	
 	@GetMapping("/index")
 	public String book(Model model) {
-		return "Heya";
+		return "welcome";
 	}
 	
 }
