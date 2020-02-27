@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Bean;
 
 import hh.swd20.Bookstore.domain.Book;
 import hh.swd20.Bookstore.domain.BookRepository;
+import hh.swd20.Bookstore.domain.Category;
+import hh.swd20.Bookstore.domain.CategoryRepository;
 
 @SpringBootApplication
 public class BookstoreApplication {
@@ -20,16 +22,19 @@ public class BookstoreApplication {
 	}
 	
 	@Bean
-	public CommandLineRunner insertData(BookRepository bookRepository) {
+	public CommandLineRunner insertData(BookRepository BRepository, CategoryRepository CRepository) {
 		return (args) -> {
-			log.info("Save a couple cars");
-			bookRepository.save(new Book("ABC-Basics", "Luku Matonen", "1999", "1234567-89", "19.99"));
-			bookRepository.save(new Book("123-Basics", "Katti Matikkainen", "1999", "1234567-90", "19.99"));
+			log.info("Save a couple categories");
 			
-			log.info("fetch all books");
-			for (Book book : bookRepository.findAll()) {
-				log.info(book.toString());
-			}
+			CRepository.save(new Category("Sci-Fi"));
+			CRepository.save(new Category("TTRPG"));
+			CRepository.save(new Category("Comic"));
+			CRepository.save(new Category("Educational"));
+			
+			log.info("Save a couple books");
+			BRepository.save(new Book("ABC-Basics", "Luku Matonen", "1999", "1234567-89", "19.99", CRepository.findByName("Educational").get(0)));
+			BRepository.save(new Book("123-Basics", "Katti Matikkainen", "1999", "1234567-90", "19.99", CRepository.findByName("Educational").get(0)));
+			
 		};
 	}
 }
