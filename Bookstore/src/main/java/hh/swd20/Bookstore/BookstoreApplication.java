@@ -35,6 +35,13 @@ public class BookstoreApplication {
 			BRepository.save(new Book("ABC-Basics", "Luku Matonen", "1999", "1234567-89", "19.99", CRepository.findByName("Educational").get(0)));
 			BRepository.save(new Book("123-Basics", "Katti Matikkainen", "1999", "1234567-90", "19.99", CRepository.findByName("Educational").get(0)));
 			
+			log.info("Let's bring up a list of all this.");
+			for (Book book : BRepository.findAll()) {
+				log.info(book.toString());
+			}
+			for (Category category : CRepository.findAll()) {
+				log.info(category.toString());
+			}
 		};
 	}
 }
