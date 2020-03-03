@@ -1,7 +1,5 @@
 package hh.swd20.Bookstore.webcontrol;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,25 +10,29 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import hh.swd20.Bookstore.domain.Book;
 import hh.swd20.Bookstore.domain.BookRepository;
+import hh.swd20.Bookstore.domain.CategoryRepository;
 
 @Controller
 public class BookstoreController {
 	
 	@Autowired
-	BookRepository bookRepository;
+	private BookRepository bookRepository;
+	
+	@Autowired
+	private CategoryRepository catRepository;
 	
 	//Kirja lista
 	@RequestMapping(value="/booklist", method = RequestMethod.GET)
 	public String book(Model model) {
-		List<Book> books = (List<Book>) bookRepository.findAll();
-		model.addAttribute("books", books);
-		return "booklist"; //carlist.html
+		model.addAttribute("books", bookRepository.findAll());
+		return "booklist"; 
 	}
 	
 	// Tyhjä kirja lomake
 	@RequestMapping(value = "/newbook", method = RequestMethod.GET)
 	public String getNewBookForm(Model model) {
 		model.addAttribute("book", new Book()); // "tyhjä" auto-olio
+		model.addAttribute("categories", catRepository.findAll());
 		return "bookform";
 	}
 
@@ -57,7 +59,7 @@ public class BookstoreController {
 			return "redirect:/booklist";
 		}
 
-	// auton poisto
+	// kirjan poisto
 	@RequestMapping(value = "/deletebook/{id}", method = RequestMethod.GET)
 	public String deleteCar(@PathVariable("id") Long bookId) {
 		bookRepository.deleteById(bookId);
